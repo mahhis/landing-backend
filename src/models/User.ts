@@ -1,71 +1,45 @@
 import {
-  DocumentType,
   getModelForClass,
   modelOptions,
   prop,
 } from '@typegoose/typegoose'
-import { omit } from 'lodash'
-import { sign } from '@/helpers/jwt'
 
 @modelOptions({
   schemaOptions: { timestamps: true },
 })
 export class User {
-  @prop({ index: true, lowercase: true })
-  email?: string
-  @prop({ index: true, lowercase: true })
-  facebookId?: string
+  
   @prop({ index: true })
-  telegramId?: number
-  @prop({ index: true, required: true })
-  name!: string
+  name?: string
 
-  @prop({ index: true, unique: true })
-  token?: string
+  @prop({ index: true, lowercase: true })
+  email!: string
 
-  strippedAndFilled(
-    this: DocumentType<User>,
-    {
-      withExtra = false,
-      withToken = true,
-    }: { withExtra?: boolean; withToken?: boolean } = {}
-  ) {
-    const stripFields = ['createdAt', 'updatedAt', '__v']
-    if (!withExtra) {
-      stripFields.push('token')
-      stripFields.push('email')
-      stripFields.push('facebookId')
-      stripFields.push('telegramId')
-    }
-    if (!withToken) {
-      stripFields.push('token')
-    }
-    return omit(this.toObject(), stripFields)
-  }
+  @prop({ index: true })
+  anotherWay?: string
+  
 }
 
 export const UserModel = getModelForClass(User)
 
-export async function findOrCreateUser(loginOptions: {
-  name: string
-  email?: string
-  facebookId?: string
-  telegramId?: number
+export async function findOrCreateUser(userData: {
+  name: string | undefined
+  email: string
+  anotherWay: string | undefined
 }) {
-  const user = await UserModel.findOneAndUpdate(
-    loginOptions,
-    {},
-    {
-      new: true,
-      upsert: true,
+  let user = await UserModel.findOne({ email: userData.email });
+
+  if (user) {
+    if (userData.name !== undefined) {
+      user.name = userData.name;
     }
-  )
-  if (!user) {
-    throw new Error('User not found')
+    if (userData.anotherWay !== undefined) {
+      user.anotherWay = userData.anotherWay;
+    }
+    await user.save();
+  } else {
+    user = await UserModel.create(userData);
   }
-  if (!user.token) {
-    user.token = await sign({ id: user.id })
-    await user.save()
-  }
-  return user
+
+  return user;
 }

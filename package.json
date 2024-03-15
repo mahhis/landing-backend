@@ -1,11 +1,8 @@
 {
-  "name": "backend-starter",
+  "name": "landing back",
   "version": "1.0.0",
-  "description": "Backend starter template",
+  "description": "landing back",
   "main": "dist/server.js",
-  "repository": "https://github.com/Borodutch/backend-starter",
-  "author": "backmeupplz <backmeupplz@gmail.com>",
-  "prettier": "@big-whale-labs/prettier-config",
   "license": "MIT",
   "scripts": {
     "distribute": "yarn build && node dist/server.js",
