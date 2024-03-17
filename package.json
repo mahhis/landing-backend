@@ -1,7 +1,7 @@
 {
   "name": "landing back",
   "version": "1.0.0",
-  "description": "landing back 1",
+  "description": "landing back",
   "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
