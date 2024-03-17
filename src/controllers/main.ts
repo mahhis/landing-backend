@@ -5,7 +5,7 @@ import { findOrCreateUser } from '@/models/User'
 import { findOrCreateOrder } from '@/models/Order'
 import TOrder from '@/validators/TOrder'
 import TQuestion from '@/validators/TQuestion'
-import { processOrder, processQuestion } from '@/telegtram/bot'
+import { processOrder, processQuestion } from '@/telegram/bot'
 import { findOrCreateQuestion } from '@/models/Question'
 
 @Controller('/')
