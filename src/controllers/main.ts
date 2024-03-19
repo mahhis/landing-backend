@@ -25,7 +25,7 @@ export default class PurchaseController {
       success: true
     }
   }catch (e){
-    ctx.throw(badRequest())
+    ctx.throw(badRequest(e))
 }
   }
 
