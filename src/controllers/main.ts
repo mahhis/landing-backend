@@ -15,8 +15,6 @@ export default class PurchaseController {
     @Ctx() ctx: Context,
     @Body({ required: true })  question: TQuestion, 
   ) {
-
-    console.log(23412)
     try {
     await findOrCreateQuestion({
       contact: question.contact,
